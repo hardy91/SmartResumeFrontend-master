@@ -1,0 +1,55 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+  <h1 class="h1">
+    {{ title }}
+    <span style="float:right">
+    <img style="box-shadow: 0px 0px 20px 0px #f0d496;    max-width: 87px;margin: -15px;border-radius: 10px;" alt="Smart job Logo" src="assets/jobs-logo.jpg">
+  </span>
+  </h1>
+
+</div>
+
+
+
+<div class="login-page">
+  <div class="form">
+     <div class="p-grid form-correc">
+            <div class="p-col-9" *ngIf="isRecruiter; else elseBlock"  > I am a recruiter</div>
+
+
+            <ng-template #elseBlock  ><div class="p-col-9">I am a candidate</div></ng-template>
+
+
+
+        <div  class="p-col-3"><p-inputSwitch [(ngModel)]="isRecruiter"  ></p-inputSwitch></div>
+      </div>
+      <div class="p-grid form-correc">
+          <div class="p-col-9" *ngIf="!isReg; else registerlabel "  > I want to login</div>
+
+
+          <ng-template #registerlabel  ><div class="p-col-9">I want to register</div></ng-template>
+
+
+
+      <div  class="p-col-3"><p-inputSwitch [(ngModel)]="isReg"  ></p-inputSwitch></div>
+    </div>
+      <ng-template  [ngIf]="isReg" ><input type="text"  [(ngModel)]="firstName" placeholder="&#xf007; first name"></ng-template>
+      <ng-template  [ngIf]="isReg" ><input type="text" [(ngModel)]="lastName" placeholder="&#xf007; Last Name"></ng-template>
+      <input type="text"  [(ngModel)]="email" placeholder="&#xf007;  email" required/>
+      <input type="password" [(ngModel)]="password" placeholder="&#xf023;  password" required/>
+      <ng-template  [ngIf]="isReg" > <input type="password" [(ngModel)]="confirmPassword"  placeholder="&#xf023; confirm password" required></ng-template>
+      <ng-template  [ngIf]="isReg"   ><button (click)="regUser()"   label="Register">REGISTER</button></ng-template >
+      <ng-template  [ngIf]="!isReg"   ><button (click)="loginUser()" label="Login" >LOGIN</button></ng-template >
+
+
+
+  </div>
+  <p-toast key="myKey1" position="top-right"></p-toast>
+</div>
+
+
+
+
+
