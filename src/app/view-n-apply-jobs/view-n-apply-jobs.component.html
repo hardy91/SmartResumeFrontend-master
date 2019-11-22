@@ -1,13 +1,30 @@
 
 <!--The content below is only a placeholder and can be replaced.-->
+
+<!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
-    <h1>
-      Welcome to {{ title }}!
-    </h1>
-    <img width="300" alt="Smart job Logo" href="/src/app/jobs-logo.jpg">
+    <h1 class="h1">
+        <span>
+            <img style="box-shadow: 0px 0px 20px 0px #f0d496;    max-width: 87px;margin: -15px;border-radius: 10px;" alt="Smart job Logo" src="assets/jobs-logo.jpg">
+          </span>
+        <span style=" margin-left:2% ;color:greenyellow !important;">
+        {{ title }}
+        </span>
+        <span style="margin-left: 475px; color: #adff2f57 !important;">
+          {{page}}
+        </span>
+        <span style="float:right">
+
+            <span style="margin-right:20px;font-style: italic;color: #9acd3282;margin-right: 20px;font-size: 20px; ">{{email}}</span> <span style="float:right"><input  class="button" type="button" (click)="logout()" value="Go"></span>
+
+
+      </span>
+      </h1>
+
   </div>
+
 
 
 <div ></div>
@@ -21,13 +38,13 @@
 
 
 
-<div class="p-grid">
+<div  class="p-grid">
 
-    <div class = "p-col-12 p-md-6 p-lg-4" >
+    <div class = "p-col-12 p-md-6 p-lg-5" >
 
-
-
-  <div *ngFor="let job of viewAllJobsRes" class="p-grid">
+        <h1 style="color:#adff2f85 ; margin-left:20px; font-size:2rem ">Job Openings</h1>
+      <div style="margin:20px ; padding: 10px;background-color:white"> Job Id &nbsp; &nbsp; &nbsp; &nbsp;  Job Title</div>
+  <div *ngFor="let job of viewAllJobsRes" class="p-grid" style="margin:20px ; padding: 10px;background-color:white" >
 
     <div class = "p-col-12 p-md-6 p-lg-1" >
       {{job.jobId}}
@@ -40,47 +57,55 @@
     </div>
     <div class = "p-col-12 p-md-6 p-lg-2"  >
 
-      <button (click)="viewJobDesc(job.jobDescription )"  > View Description </button>
+      <button (click)="viewJobDesc(job.jobDescription )"  > Description </button>
     </div>
     <div class = "p-col-12 p-md-6 p-lg-2" >
         <button  (click)="applyJob(job.jobId)"  > Apply Job </button>
     </div>
   </div>
 
+  <h1 style="color:#adff2f85; margin-top:40px; margin-left:20px; font-size:2rem ">Job Applied</h1>
+  <div style="margin:20px ; padding: 10px;background-color:white"> Job Id &nbsp; &nbsp; &nbsp; &nbsp;  Job Title</div>
+
+  <div *ngFor="let appliedJob of appliedJobsRes" style="margin:20px ; padding: 10px;background-color:white" class = "p-grid">
+
+
+          <div class = "p-col-12 p-md-6 p-lg-2" >
+              {{appliedJob.jobId}}
+
+          </div>
+
+          <div class = "p-col-12 p-md-6 p-lg-10" >
+              {{appliedJob.jobTitle}}
+
+          </div>
+
+
 
   </div>
 
-  <div class = "p-col-12 p-md-6 p-lg-8" >
-    <div  class="p-grid">
 
-        <div class ="p-col-12 p-md-12 p-lg-6" >
-          <p>
-          {{selectedJobDesc}}
-          </p>
+
+
+  </div>
+
+  <div class = "p-col-12 p-md-6 p-lg-7" >
+    <div  class="p-grid">
+        <h1 style="color:#adff2f85 ; margin-top:35px; font-size:2rem ">Job Description</h1>
+        <div style="padding: 10px;background-color:white" class ="p-col-12 p-md-12 p-lg-11" >
+
+          <div style="background-color:white ;margin-bottom: 20px;">
+              <app-ngx-editor  style= "color: black ; background-color :black;"[placeholder]=""  [config] ="ngxEditorConfig" [(ngModel)]="selectedJobDesc"></app-ngx-editor>
+            </div>
+
+
           </div>
 
-          <div class ="p-col-12 p-md-12 p-lg-6" >
-            <div *ngFor="let appliedJob of appliedJobsRes" class = "p-grid">
 
 
-                    <div class = "p-col-12 p-md-6 p-lg-2" >
-                        {{appliedJob.jobId}}
-
-                    </div>
-
-                    <div class = "p-col-12 p-md-6 p-lg-10" >
-                        {{appliedJob.title}}
-
-                    </div>
-
-
-
-            </div>
-
-
-            </div>
 
     </div>
 
   </div>
   </div>
+  <p-toast key="myKey2" position="top-right"></p-toast>

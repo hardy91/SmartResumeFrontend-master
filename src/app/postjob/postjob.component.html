@@ -1,27 +1,39 @@
+
+<!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Smart job Logo" href="/src/app/jobs-logo.jpg">
-</div>
-<div ></div>
-<div class="p-grid">
+    <h1 class="h1">
+        <span>
+            <img style="box-shadow: 0px 0px 20px 0px #f0d496;    max-width: 87px;margin: -15px;border-radius: 10px;" alt="Smart job Logo" src="assets/jobs-logo.jpg">
+          </span>
+        <span style=" margin-left:2% ;color:greenyellow !important;">
+        {{ title }}
+        </span>
+        <span style="margin-left: 475px; color: #adff2f57 !important;">
+          {{page}}
+        </span>
+        <span style="float:right">
 
-  <div class = "p-col-12 p-md-6 p-lg-6" >
+            <span style="margin-right:20px;font-style: italic;color: #9acd3282;margin-right: 20px;font-size: 20px; ">{{email}}</span> <span style="float:right"><input  class="button" type="button" (click)="logout()" value="Go"></span>
 
+
+      </span>
+      </h1>
 
   </div>
-</div>
+
 
 
 <div class="p-grid">
-
-  <div class = "p-col-12 p-md-6 p-lg-6" >
+    <div class = "p-col-2 p-md-2 p-lg-2" ></div>
+  <div style ="font-size: 1.5rem;" class = "p-col-8 p-md-8 p-lg-8" >
 
       Job Title <input type="text" [(ngModel)]="jobTitle"  name="jobTitle" placeholder="Job Title" class="form-control"><br>
-      Job Description <textarea type="textarea" [(ngModel)]="jobDesc"  rows="4" cols="50" name="jobDesc" placeholder="Job Description" class="form-control"></textarea><br>
+      Job Description<br>
+      <div style="background-color:white ;margin-bottom: 20px;">
+        <app-ngx-editor  style= "color: black ; background-color :black;"[placeholder]="'Enter text here...'"  [config] ="ngxEditorConfig" [spellcheck]="true" [(ngModel)]="jobDesc"></app-ngx-editor>
+      </div>
 
       <div class="p-grid">
 
@@ -45,3 +57,4 @@
   </div>
 </div>
 <p-toast key="myKey3" position="top-right"></p-toast>
+

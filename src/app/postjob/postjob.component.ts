@@ -6,24 +6,53 @@ import { saveAs } from 'file-saver';
 
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
+import { ViewEncapsulation } from '@angular/core'
 
 
 @Component({
   selector: 'app-postjob',
   templateUrl: './postjob.component.html',
-  styleUrls: ['./postjob.component.css']
+  styleUrls: ['./postjob.component.scss'],
+
+
 })
 export class PostjobComponent implements OnInit {
-  title = 'Infinity Jobs';
+  title = 'Smart Resume';
+  page = 'Compose Job';
   jobTitle : String ;
-  jobDesc : String ;
-  baseUrl = "http://localhost:8080";
+  jobDesc : String ='<div>Hello World!</div><div>PrimeNG <b>Editor</b> Rocks</div><div><br></div>';
+  baseUrl = "http://localhost:8082";
   emptyString : String =  "" ;
   addJobRes :any =  { message : "" , object: {jobId : "" , jobTitle : "" , jobDescription : "" }};
+  ngxEditorConfig : Object
+  email: String
 
-  constructor(private messageService : MessageService , private httpClient :HttpClient , private router : Router) { }
+  constructor( private messageService : MessageService , private httpClient :HttpClient , private router : Router) { }
 
   ngOnInit() {
+    this.ngxEditorConfig =
+    {
+      "editable": true,
+      "spellcheck": true,
+      "height": "auto",
+      "minHeight": "400px",
+      "width": "auto",
+      "minWidth": "0",
+      "translate": "yes",
+      "enableToolbar": true,
+      "showToolbar": true,
+      "placeholder": "Enter text here...",
+      "imageEndPoint": "",
+      "toolbar": [
+          ["bold", "italic ", "underline", "strikeThrough", "superscript", "subscript"],
+          ["fontName", "fontSize", "color"],
+          ["justifyLeft", "justifyCenter", "justifyRight", "justifyFull", "indent", "outdent"],
+          ["cut", "copy", "delete", "removeFormat", "undo", "redo"],
+          ["paragraph", "blockquote", "removeBlockquote", "horizontalLine", "orderedList", "unorderedList"],
+          ["link", "unlink", "image", "video"]
+      ]
+  }
+  this.email = localStorage.getItem("email")
   }
 
   addJob(){
@@ -78,10 +107,10 @@ export class PostjobComponent implements OnInit {
           //     " in system."
           // });
           // if(this.userProfile.object ){
-          // sessionStorage.setItem("userProfile", JSON.stringify(data));
-          // sessionStorage.setItem("role", this.userProfile.object.role);
-          // sessionStorage.setItem("email", this.userProfile.object.email);
-          // sessionStorage.setItem("message", this.userProfile.message );
+          // localStorage.setItem("userProfile", JSON.stringify(data));
+          // localStorage.setItem("role", this.userProfile.object.role);
+          // localStorage.setItem("email", this.userProfile.object.email);
+          // localStorage.setItem("message", this.userProfile.message );
 
           //   if(this.userProfile.object.role == "recruiter"){
           //     this.router.navigateByUrl("/postjob");
@@ -111,5 +140,9 @@ export class PostjobComponent implements OnInit {
 
   navToAllJobs(){
     this.router.navigateByUrl("/viewalljobs");
+  }
+  logout(){
+    localStorage.clear();
+   this.router.navigateByUrl("/");
   }
 }

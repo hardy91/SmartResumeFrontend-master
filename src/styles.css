@@ -7,7 +7,7 @@ h1 {
 }
 .h1{
 background: #0303033b;
-    color: greenyellow !important;
+
     font-size: 36px;
     text-align: left;
     margin: 20px;
@@ -190,5 +190,4 @@ nav a.active {
 .container .info span .fa {
   color: #EF3B3A;
 }
-
 

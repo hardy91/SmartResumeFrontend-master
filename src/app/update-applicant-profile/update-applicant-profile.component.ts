@@ -7,12 +7,15 @@ import { saveAs } from 'file-saver';
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { RouterScroller } from '@angular/router/src/router_scroller';
+import { Observable } from 'rxjs/internal/Observable';
+import { map, catchError } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-update-applicant-profile',
   providers: [MessageService],
   templateUrl: './update-applicant-profile.component.html',
-  styleUrls: ['./update-applicant-profile.component.css']
+  styleUrls: ['./update-applicant-profile.component.scss']
 })
 export class UpdateApplicantProfileComponent implements OnInit {
 
@@ -20,14 +23,16 @@ export class UpdateApplicantProfileComponent implements OnInit {
   constructor(private messageService : MessageService , private httpClient :HttpClient , private router : Router) {}
 
  isRecruiterViewing : boolean ;
-  title = 'Infinity Jobs';
-  baseUrl = "http://localhost:8080";
+  title = 'Smart Resume';
+  page = "Update Profile"
+  baseUrl = "http://localhost:8082";
   items: MenuItem[];
   activeIndex: number = 0;
   firstName  : String;
   lastName : String;
   resumeLink : String;
   email : String ;
+  candidateEmail :String
   phone : String ;
   address : String;
 
@@ -48,6 +53,8 @@ export class UpdateApplicantProfileComponent implements OnInit {
   updateProfileResponse :any = {message : "", object:{ name :"" ,address :"" ,phone:"",resumeLink: "" }} ;
   getProfileResponse :any = { object:{ name :"" ,address :"" ,phone:"",resumeLink: "" }} ;
   selectedValue : any ;
+
+
   ngOnInit() {
     this.messageService.add({
       key: "myKey2",
@@ -55,14 +62,17 @@ export class UpdateApplicantProfileComponent implements OnInit {
       summary: "notification worked ",
       detail: "message service worked"
     });
-    if(sessionStorage.getItem("recruiterViewing")){
-      this.email = sessionStorage.getItem("recruiterViewing")
-      sessionStorage.removeItem("recruiterViewing");
+    this.email  = localStorage.getItem("email");
+    if(localStorage.getItem("recruiterViewing")){
+      this.candidateEmail = localStorage.getItem("recruiterViewing")
+     localStorage.removeItem("recruiterViewing");
+
       this.isRecruiterViewing  = true ;
 
     }
     else{
-      this.email  = sessionStorage.getItem("email");
+
+      this.candidateEmail = this.email;
     }
 
 
@@ -153,11 +163,11 @@ command: (event: any) => {
 
 
 
-if(sessionStorage.getItem("message")){
-  let message = sessionStorage.getItem("message");
+if(localStorage.getItem("message")){
+  let message = localStorage.getItem("message");
   this.messageService.add({key: "myKey2",
   severity: "error", summary:'Message', detail: message});
-  sessionStorage.removeItem("message") ;
+  localStorage.removeItem("message") ;
 }
 
 
@@ -165,7 +175,7 @@ if(sessionStorage.getItem("message")){
 let path  = "/getprofile"
 this.httpClient
 .post(this.baseUrl + path, {
-  email: this.email,
+  email: this.candidateEmail,
 
 })
 .subscribe(
@@ -229,12 +239,8 @@ this.resumeLink = this.getProfileResponse.object.resumeLink;
 
   updateProfile(){
 
-
-    let path = "/updateProfile";
-    let userType = "";
-
-
-
+       let path = "/updateProfile";
+    let  userType = "";
     this.httpClient
       .post(this.baseUrl + path, {
         email: this.email,
@@ -261,7 +267,7 @@ this.resumeLink = this.getProfileResponse.object.resumeLink;
           this.messageService.add({
             key: "myKey2",
             severity: "success",
-            summary: "Successful Login",
+            summary: "Successful profile update",
             detail:  this.updateProfileResponse.message
 
           });
@@ -278,7 +284,7 @@ this.resumeLink = this.getProfileResponse.object.resumeLink;
           this.messageService.add({
             key: "myKey2",
             severity: "success",
-            summary: "Successful Login",
+            summary: "Error occured",
             detail:  this.updateProfileResponse.message
 
           });
@@ -293,6 +299,36 @@ this.resumeLink = this.getProfileResponse.object.resumeLink;
 this.router.navigateByUrl("/view_n_apply_jobs");
 
   }
+
+
+  logout(){
+    localStorage.clear();
+   this.router.navigateByUrl("/");
+  }
+
+  fileToUpload: File = null;
+  handleFileInput(files: FileList) {
+    this.fileToUpload = files.item(0);
+  }
+
+  uploadFileToActivity() {
+    this.postFile(this.fileToUpload).subscribe(data => {
+      // do something, if upload success
+      }, error => {
+        console.log(error);
+      });
+  }
+
+  postFile(fileToUpload: File): Observable<boolean> {
+    const endpoint = '/uploadResume';
+    const formData: FormData = new FormData();
+    formData.append('file', fileToUpload, fileToUpload.name);
+    return this.httpClient
+      .post(this.baseUrl + endpoint,  formData)
+      .pipe(map(() => { return true; }))
+
+}
+
   }
 
 

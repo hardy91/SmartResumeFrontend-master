@@ -30,6 +30,7 @@ import {RadioButtonModule} from 'primeng/radiobutton';
 import { PostjobComponent } from './postjob/postjob.component';
 import { ViewAllJobsComponent } from './view-all-jobs/view-all-jobs.component';
 import { ViewNApplyJobsComponent } from './view-n-apply-jobs/view-n-apply-jobs.component';
+import { NgxEditorModule } from 'ngx-editor';
 
 
 @NgModule({
@@ -59,7 +60,9 @@ import { ViewNApplyJobsComponent } from './view-n-apply-jobs/view-n-apply-jobs.c
     MessagesModule,
     AppRoutingModule,
     FileUploadModule,
-    RadioButtonModule
+    RadioButtonModule,
+    NgxEditorModule
+
 
   ],
   providers: [MessageService],

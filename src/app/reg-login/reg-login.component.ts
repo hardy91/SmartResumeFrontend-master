@@ -22,9 +22,10 @@ export class RegLoginComponent implements OnInit {
     private router: Router,
     private httpClient: HttpClient
   ) {}
-  title = 'Resume Parser';
+  title = 'Smart Resume';
+  page = 'Login / Register'
   //config : Config ;
-  baseUrl = "http://localhost:8080";
+  baseUrl = "http://localhost:8082";
   items: MenuItem[];
   activeIndex: number = 0;
   isRecruiter: boolean = false;
@@ -106,6 +107,16 @@ export class RegLoginComponent implements OnInit {
     ];
 
     this.addSingle();
+    let re = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+    let userProfileObject = JSON.parse( localStorage.userProfile).object;
+    if(localStorage.role && localStorage.userProfile && userProfileObject.email && localStorage.email != "" && re.test(String(localStorage.email).toLowerCase())){
+      if(localStorage.role == "recruiter" ){
+        this.router.navigateByUrl("/postjob");
+      }
+      else{
+        this.router.navigateByUrl("/update_applicant_profile")
+      }
+    }
   }
 
   addSingle() {
@@ -186,20 +197,16 @@ export class RegLoginComponent implements OnInit {
               " in system."
           });
           if(this.userProfile.object ){
-          sessionStorage.setItem("userProfile", JSON.stringify(data));
-          sessionStorage.setItem("role", this.userProfile.object.role);
-          sessionStorage.setItem("email", this.userProfile.object.email);
-          sessionStorage.setItem("message", this.userProfile.message );
+          localStorage.setItem("userProfile", JSON.stringify(data));
+          localStorage.setItem("role", this.userProfile.object.role);
+          localStorage.setItem("email", this.userProfile.object.email);
+          localStorage.setItem("message", this.userProfile.message );
 
             if(this.userProfile.object.role == "recruiter"){
               this.router.navigateByUrl("/postjob");
-
             }else {
-
               this.router.navigateByUrl("/update_applicant_profile");
             }
-
-
           }
         },
         error => {

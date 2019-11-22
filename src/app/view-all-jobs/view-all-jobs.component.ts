@@ -18,7 +18,7 @@ class Job{
 @Component({
   selector: 'app-view-all-jobs',
   templateUrl: './view-all-jobs.component.html',
-  styleUrls: ['./view-all-jobs.component.css']
+  styleUrls: ['./view-all-jobs.component.scss']
 })
 export class ViewAllJobsComponent implements OnInit {
 job : any ={jobId : "" , jobTitle : "" , jobDescription : ""}
@@ -27,14 +27,42 @@ job : any ={jobId : "" , jobTitle : "" , jobDescription : ""}
   candidatesForJobRes : any =[] ;
 
   //[{"jobId":"1","jobTitle":"Student ","jobDescription":"vcvc"},{"jobId":"2","jobTitle":"dfsdf","jobDescription":"sdfsd"}];
-  title = 'Infinity Jobs';
-  baseUrl = "http://localhost:8080";
+  title = 'Smart Resume';
+  page = 'View all jobs';
+  baseUrl = "http://localhost:8082";
   selectedJobDesc : String;
+  ngxEditorConfig : Object ;
+  email : String;
+
 
   constructor(private messageService : MessageService , private httpClient :HttpClient , private router : Router) {}
 
   ngOnInit() {
 
+
+    this.email = localStorage.getItem("email");
+    this.ngxEditorConfig =
+    {
+      "editable": false,
+      "spellcheck": false,
+      "height": "auto",
+      "minHeight": "400px",
+      "width": "auto",
+      "minWidth": "0",
+      "translate": "yes",
+      "enableToolbar": true,
+      "showToolbar": false,
+      "placeholder": "Enter text here...",
+      "imageEndPoint": "",
+      "toolbar": [
+          ["bold", "italic ", "underline", "strikeThrough", "superscript", "subscript"],
+          ["fontName", "fontSize", "color"],
+          ["justifyLeft", "justifyCenter", "justifyRight", "justifyFull", "indent", "outdent"],
+          ["cut", "copy", "delete", "removeFormat", "undo", "redo"],
+          ["paragraph", "blockquote", "removeBlockquote", "horizontalLine", "orderedList", "unorderedList"],
+          ["link", "unlink", "image", "video"]
+      ]
+  }
 
 
     let path  = "/viewjobs"
@@ -44,7 +72,7 @@ job : any ={jobId : "" , jobTitle : "" , jobDescription : ""}
         data => {
            console.log("POST Request is successful ", data);
            this.viewAllJobsRes = data ;
-           console.log (this.viewAllJobsRes["1"].jobId);
+
 
             this.messageService.add({
             key: "myKey3",
@@ -76,10 +104,10 @@ job : any ={jobId : "" , jobTitle : "" , jobDescription : ""}
           //     " in system."
           // });
           // if(this.userProfile.object ){
-          // sessionStorage.setItem("userProfile", JSON.stringify(data));
-          // sessionStorage.setItem("role", this.userProfile.object.role);
-          // sessionStorage.setItem("email", this.userProfile.object.email);
-          // sessionStorage.setItem("message", this.userProfile.message );
+          // localStorage.setItem("userProfile", JSON.stringify(data));
+          // localStorage.setItem("role", this.userProfile.object.role);
+          // localStorage.setItem("email", this.userProfile.object.email);
+          // localStorage.setItem("message", this.userProfile.message );
 
           //   if(this.userProfile.object.role == "recruiter"){
           //     this.router.navigateByUrl("/postjob");
@@ -169,10 +197,10 @@ job : any ={jobId : "" , jobTitle : "" , jobDescription : ""}
           //     " in system."
           // });
           // if(this.userProfile.object ){
-          // sessionStorage.setItem("userProfile", JSON.stringify(data));
-          // sessionStorage.setItem("role", this.userProfile.object.role);
-          // sessionStorage.setItem("email", this.userProfile.object.email);
-          // sessionStorage.setItem("message", this.userProfile.message );
+          // localStorage.setItem("userProfile", JSON.stringify(data));
+          // localStorage.setItem("role", this.userProfile.object.role);
+          // localStorage.setItem("email", this.userProfile.object.email);
+          // localStorage.setItem("message", this.userProfile.message );
 
           //   if(this.userProfile.object.role == "recruiter"){
           //     this.router.navigateByUrl("/postjob");
@@ -190,7 +218,7 @@ job : any ={jobId : "" , jobTitle : "" , jobDescription : ""}
           this.messageService.add({
             key: "myKey2",
             severity: "success",
-            summary: "Successful Login",
+            summary: "Successful ",
             detail:  this.viewAllJobsRes.message
 
           });
@@ -200,8 +228,12 @@ job : any ={jobId : "" , jobTitle : "" , jobDescription : ""}
   }
 
   viewCandidateProfile(candidate : any){
-    sessionStorage.setItem("recruiterViewing" , candidate.email+'' );
+    localStorage.setItem("recruiterViewing" , candidate.email+'' );
     this.router.navigateByUrl("/update_applicant_profile");
   }
 
+  logout(){
+    localStorage.clear();
+   this.router.navigateByUrl("/");
+  }
 }

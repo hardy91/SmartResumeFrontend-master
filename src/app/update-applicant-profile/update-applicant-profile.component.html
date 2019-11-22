@@ -3,19 +3,34 @@
 <div style="text-align:center">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Smart job Logo" href="/src/app/jobs-logo.jpg">
-</div>
+  <h1 class="h1">
+      <span>
+          <img style="box-shadow: 0px 0px 20px 0px #f0d496;    max-width: 87px;margin: -15px;border-radius: 10px;" alt="Smart job Logo" src="assets/jobs-logo.jpg">
+        </span>
+      <span style=" margin-left:2% ;color:greenyellow !important;">
+      {{ title }}
+      </span>
+      <span style="margin-left: 475px; color: #adff2f57 !important;">
+        {{page}}
+      </span>
+      <span style="float:right">
 
-<p-steps [model]="items" [(activeIndex)]="activeIndex" [readonly]="false"></p-steps>
+          <span style="margin-right:20px;font-style: italic;color: #9acd3282;margin-right: 20px;font-size: 20px; ">{{email}}</span> <span style="float:right"><input  class="button" type="button" (click)="logout()" value="Go"></span>
+
+
+    </span>
+    </h1>
+  <img style="    margin-left: -99px;" alt="." >
+</div>
+<div style= "color:lightgoldenrodyellow">
+<p-steps   [model]="items" [(activeIndex)]="activeIndex" [readonly]="false"></p-steps>
 
 <div [ngSwitch]="activeIndex">
   <!-- the same view can be shown in more than one case -->
-  <div style="background: red" *ngSwitchCase="0">
+  <div *ngSwitchCase="0">
 
-    <div class="col-md-3"></div>
+    <div class="col-md-3">
+    </div>
     <div class="col-md-5">
       <div class="row">
 
@@ -25,12 +40,12 @@
         <div class="row">
           <div class="col-md-3"></div>
           <div class="col-md-8">
-            <h1>Personal Info</h1>
+            <h1 style="color:#adff2f85">Personal Info</h1>
 
             <form action="/thankyou" method="get">
               First name <input type="text" [(ngModel)]="firstName" name="firstname" placeholder="First Name" class="form-control"><br>
               Last name <input class="form-control" [(ngModel)]="lastName" name="lastName" type="text"   placeholder="LastName"><br>
-              Email <input type="text" readonly="true" [(ngModel)]="email" name="email"  placeholder="Email" class="form-control"><br>
+              Email <input type="text" readonly="true" [(ngModel)]="candidateEmail" name="email"  placeholder="Email" class="form-control"><br>
               Address<br> <span><input type="input" [(ngModel)]="address" name="address" class="form-control" cols="20" rows="10"  placeholder="Address Line 1"></span><br>
 
               <br>
@@ -47,7 +62,9 @@
 
 
     </div>
-
+    <div class="col-md-3">
+        <span class="arrow " (click) ="activeIndex = activeIndex+1"></span>
+    </div>
 
       <!--default case when there are no matches -->
  </div>
@@ -55,7 +72,9 @@
 
  <div style="background: red" *ngSwitchCase="1">
 
-    <div class="col-md-3"></div>
+    <div class="col-md-3">
+        <span class="arrow flip" (click) ="activeIndex = activeIndex-1"></span>
+    </div>
     <div class="col-md-5">
       <div class="row">
 
@@ -68,8 +87,13 @@
             <h1>Documents</h1>
 
             <form action="/thankyou" >
-              Resume <input type="text" [(ngModel)]="resumeLink" name="resumeLink" placeholder="Please past path of resume file"   class="form-control"><br>
-
+              <div class="form-group">
+                <label for="file">Choose File</label>
+                <input type="file"
+                       id="file"
+                       (change)="handleFileInput($event.target.files)">
+                       <button (click)="uploadFileToActivity()" label="Upload" >Upload</button>
+            </div>
                 <!-- <button onclick="javascript:alert(document.myForm.path.value)"  ></button> -->
 
 
@@ -86,18 +110,22 @@
 
 
     </div>
-
+    <div class="col-md-3">
+        <span class="arrow " (click) ="activeIndex = activeIndex+1"></span>
+    </div>
 
       <!--default case when there are no matches -->
- </div>
+ </div >
  <p-toast key="myKey2" position="top-right"></p-toast>
 
 
  <div style="background: red" *ngSwitchCase="2">
 
-    <div class="col-md-3"></div>
+    <div class="col-md-3">
+        <span class="arrow flip" (click) ="activeIndex = activeIndex-1"></span>
+    </div>
     <div class="col-md-5">
-      <div class="row">
+
 
 
 
@@ -120,21 +148,23 @@
             </form>
 
           </div>
-
+          <div class="col-md-1"></div>
         </div>
-      </div>
+
 
 
 
     </div>
-
+    <div class="col-md-3">
+        <span class="arrow" (click) ="activeIndex = activeIndex+1" ></span>
+    </div>
 
 
  </div>
 
- <div style="background: red" *ngSwitchCase="3">
+ <div *ngSwitchCase="3">
 
-    <div class="col-md-3"></div>
+    <div class="col-md-3 arrow flip"  (click) ="activeIndex = activeIndex-1" ></div>
     <div class="col-md-5">
       <div class="row">
 
@@ -166,15 +196,16 @@
 
 
     </div>
+    <div class="col-md-3 arrow" (click) ="activeIndex = activeIndex+1"></div>
 
 
  </div>
 
 
 
- <div style="background: red" *ngSwitchCase="5">
+ <div  *ngSwitchCase="4">
 
-    <div class="col-md-3"></div>
+    <div class="col-md-3 arrow flip"  (click) ="activeIndex = activeIndex-1"></div>
     <div class="col-md-5">
       <div class="row">
 
@@ -219,4 +250,5 @@
 
       <!--default case when there are no matches -->
  </div>
+</div>
 </div>

@@ -11,24 +11,51 @@ import { routerNgProbeToken } from '@angular/router/src/router_module';
 @Component({
   selector: 'app-view-n-apply-jobs',
   templateUrl: './view-n-apply-jobs.component.html',
-  styleUrls: ['./view-n-apply-jobs.component.css']
+  styleUrls: ['./view-n-apply-jobs.component.scss']
 })
 export class ViewNApplyJobsComponent implements OnInit {
 
-  title = 'Infinity Jobs';
-  baseUrl = "http://localhost:8080";
+  title = 'Smart Resume';
+  page = 'View and apply jobs';
+  baseUrl = "http://localhost:8082";
 
   viewAllJobsRes:any = [] ;
   candidatesForJobRes : any =[] ;
   selectedJobDesc : String;
   appliedJobsRes :any = [] ;
   applyJobRes : any =[] ;
+  email:String;
+  ngxEditorConfig : Object ;
 
   constructor(private messageService : MessageService , private httpClient :HttpClient , private router : Router) {}
 
   ngOnInit() {
 
 
+    this.ngxEditorConfig =
+    {
+      "editable": false,
+      "spellcheck": false,
+      "height": "auto",
+      "minHeight": "400px",
+      "width": "auto",
+      "minWidth": "0",
+      "translate": "yes",
+      "enableToolbar": true,
+      "showToolbar": false,
+      "placeholder": "Enter text here...",
+      "imageEndPoint": "",
+      "toolbar": [
+          ["bold", "italic ", "underline", "strikeThrough", "superscript", "subscript"],
+          ["fontName", "fontSize", "color"],
+          ["justifyLeft", "justifyCenter", "justifyRight", "justifyFull", "indent", "outdent"],
+          ["cut", "copy", "delete", "removeFormat", "undo", "redo"],
+          ["paragraph", "blockquote", "removeBlockquote", "horizontalLine", "orderedList", "unorderedList"],
+          ["link", "unlink", "image", "video"]
+      ]
+  }
+
+    this.email = localStorage.getItem("email");
 
     let path  = "/viewjobs"
     this.httpClient
@@ -42,7 +69,7 @@ export class ViewNApplyJobsComponent implements OnInit {
             this.messageService.add({
             key: "myKey3",
             severity: "success",
-            summary: "Successfully added",
+            summary: "Successfully Fetched",
             detail:  this.viewAllJobsRes.message
 
           });
@@ -69,10 +96,10 @@ export class ViewNApplyJobsComponent implements OnInit {
           //     " in system."
           // });
           // if(this.userProfile.object ){
-          // sessionStorage.setItem("userProfile", JSON.stringify(data));
-          // sessionStorage.setItem("role", this.userProfile.object.role);
-          // sessionStorage.setItem("email", this.userProfile.object.email);
-          // sessionStorage.setItem("message", this.userProfile.message );
+          // localStorage.setItem("userProfile", JSON.stringify(data));
+          // localStorage.setItem("role", this.userProfile.object.role);
+          // localStorage.setItem("email", this.userProfile.object.email);
+          // localStorage.setItem("message", this.userProfile.message );
 
           //   if(this.userProfile.object.role == "recruiter"){
           //     this.router.navigateByUrl("/postjob");
@@ -89,8 +116,8 @@ export class ViewNApplyJobsComponent implements OnInit {
           console.log("Error", error);
           this.messageService.add({
             key: "myKey2",
-            severity: "success",
-            summary: "Successful Login",
+            severity: "error",
+            summary: "Error",
             detail:  this.viewAllJobsRes.message
 
           });
@@ -115,13 +142,7 @@ export class ViewNApplyJobsComponent implements OnInit {
            this.appliedJobsRes = data ;
           // console.log (this.viewAllJobsRes["1"].jobId);
 
-            this.messageService.add({
-            key: "myKey3",
-            severity: "success",
-            summary: "Successfully added",
-            detail:  this.appliedJobsRes.message
 
-          });
           // console.log("POST Request is successful ", );
           // this.userProfile = data;
           // this.email = this.userProfile.email;
@@ -145,10 +166,10 @@ export class ViewNApplyJobsComponent implements OnInit {
           //     " in system."
           // });
           // if(this.userProfile.object ){
-          // sessionStorage.setItem("userProfile", JSON.stringify(data));
-          // sessionStorage.setItem("role", this.userProfile.object.role);
-          // sessionStorage.setItem("email", this.userProfile.object.email);
-          // sessionStorage.setItem("message", this.userProfile.message );
+          // localStorage.setItem("userProfile", JSON.stringify(data));
+          // localStorage.setItem("role", this.userProfile.object.role);
+          // localStorage.setItem("email", this.userProfile.object.email);
+          // localStorage.setItem("message", this.userProfile.message );
 
           //   if(this.userProfile.object.role == "recruiter"){
           //     this.router.navigateByUrl("/postjob");
@@ -186,21 +207,21 @@ export class ViewNApplyJobsComponent implements OnInit {
    let path  = "/applyjob"
    this.httpClient
      .post(this.baseUrl + path,{
-       email : sessionStorage.getItem("email"),
+       email : localStorage.getItem("email"),
        jobId : jobId
 
      })
      .subscribe(
        data => {
           console.log("POST Request is successful ", data);
-        //  this.applyJobRes = data ;
+          this.applyJobRes = data ;
          // console.log (this.viewAllJobsRes["1"].jobId);
 
            this.messageService.add({
-           key: "myKey3",
+           key: "myKey2",
            severity: "success",
            summary: "Successfully added",
-           detail:  "you have applied to job successsfully "
+           detail:  "You have applied for job"
 
          });
          // console.log("POST Request is successful ", );
@@ -226,10 +247,10 @@ export class ViewNApplyJobsComponent implements OnInit {
          //     " in system."
          // });
          // if(this.userProfile.object ){
-         // sessionStorage.setItem("userProfile", JSON.stringify(data));
-         // sessionStorage.setItem("role", this.userProfile.object.role);
-         // sessionStorage.setItem("email", this.userProfile.object.email);
-         // sessionStorage.setItem("message", this.userProfile.message );
+         // localStorage.setItem("userProfile", JSON.stringify(data));
+         // localStorage.setItem("role", this.userProfile.object.role);
+         // localStorage.setItem("email", this.userProfile.object.email);
+         // localStorage.setItem("message", this.userProfile.message );
 
          //   if(this.userProfile.object.role == "recruiter"){
          //     this.router.navigateByUrl("/postjob");
@@ -258,6 +279,10 @@ export class ViewNApplyJobsComponent implements OnInit {
 
   }
 
+  logout(){
+    localStorage.clear();
+   this.router.navigateByUrl("/");
+  }
 
 
 }
