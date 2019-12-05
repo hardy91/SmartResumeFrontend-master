@@ -267,7 +267,7 @@ this.resumeLink = this.getProfileResponse.object.resumeLink;
           this.messageService.add({
             key: "myKey2",
             severity: "success",
-            summary: "Successful profile update",
+            summary: "Successfully file uploaded",
             detail:  this.updateProfileResponse.message
 
           });

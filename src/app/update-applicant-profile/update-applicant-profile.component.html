@@ -20,7 +20,7 @@
 
     </span>
     </h1>
-  <img style="    margin-left: -99px;" alt="." >
+  <!-- <img style="    margin-left: -99px;" alt="." > -->
 </div>
 <div style= "color:lightgoldenrodyellow">
 <p-steps   [model]="items" [(activeIndex)]="activeIndex" [readonly]="false"></p-steps>
@@ -92,7 +92,7 @@
                 <input type="file"
                        id="file"
                        (change)="handleFileInput($event.target.files)">
-                       <button (click)="uploadFileToActivity()" label="Upload" >Upload</button>
+                       <button style="color:black"(click)="uploadFileToActivity()" label="Upload" >Upload</button>
             </div>
                 <!-- <button onclick="javascript:alert(document.myForm.path.value)"  ></button> -->
 
