@@ -26,7 +26,7 @@
     "@angular/router": "^7.2.15",
     "@angular/upgrade": "^7.2.15",
     "@kolkov/angular-editor": "^1.0.0-beta.6",
-    "angular": "^1.7.9",
+    "angular": "^1.8.0",
     "angular-in-memory-web-api": "^0.6.0",
     "angular-sanitize": "^1.7.8",
     "core-js": "^2.6.10",
